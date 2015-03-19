@@ -8,8 +8,8 @@
 #define NUM_BITS_IDENTIFY_BUS 2
 #define INVALID_BUS_BIT -1
 
-#define BLINK_ON_TIME 500
-#define BLINK_OFF_TIME 500
+#define BLINK_ON_TIME 250
+#define BLINK_OFF_TIME 250
 
 #define DATA_PIN 4
 #define LATCH_PIN 5
@@ -180,11 +180,12 @@ void executeTurnOffAllCommand(){
 Send 6 characters via serial. 
 First Two indicate the command (B1 in this case)
 Second Two indicate which bus to blink
-Last Two indicate how many times to blink (eg 05 indicate blink 5 times)
+Last Two indicate how many times to blink (eg 05 indicates blink 5 times)
 
 Ex. Send: B1v105 (Blink v1 five times)
 */
 void executeBlinkCommand(){
+  int numBusesToBlink = 1;
   printDebugMessage("executeBlinkCommand","Start of function");
 
   // Read next two characters from serial monitor
@@ -205,18 +206,47 @@ void executeBlinkCommand(){
   int* busesToBlink[] = {busBits};
 
   // Blink the bus
-  blinkBus(busState, busesToBlink, stringToInt(blinkCountChars));
+  blinkBus(busState, busesToBlink, numBusesToBlink, stringToInt(blinkCountChars));
 }
 
 /*
-Send 4 characters via serial. 
-First Two indicate the command
-Second Two indicate which bus to turn on
+Send 8 characters via serial. 
+First Two indicate the command (B2 in this case)
+Next Two indicate the first bus which must be blinked.
+Next Two indicate the next bus which must be blinked.
+Last Two indicate the number of times to blink (eg 05 indicates blink 5 times)
 
-Ex. Send: TTv1
+Ex. Send: B2v1v505 (Blink v1 and v5 one after another 5 times)
 */
 void executeBlinkTwoCommand(){
+  int numBusesToBlink = 2;
   printDebugMessage("executeBlinkTwoCommand","Start of function");  
+  // Read next two characters from serial monitor
+  // To figure out which bus to blink.
+  char bus[SERIAL_READ_CHARS+1]={'\0'};
+  getSerialData(bus);
+
+  // Get the bits which need to be toggled to blink the bus got above. 
+  int busBits1[NUM_BITS_IDENTIFY_BUS] = {-1};
+  getBitsCorrespondingToBus(bus,busBits1);
+ 
+  // Read the next two characters from serial monitor
+  // To figure out which other bus to blink.
+  getSerialData(bus);
+  int busBits2[NUM_BITS_IDENTIFY_BUS] = {-1};
+  getBitsCorrespondingToBus(bus,busBits2);
+
+  // Put the bus bits into another int array so that blinkBus can be a
+  // Generic function which blinks one bus or multiple buses.
+  int* busesToBlink[] = {busBits1, busBits2};
+
+  // Get the next two bits which would identify how many times to blink
+  char blinkCountChars[SERIAL_READ_CHARS+1]={'\0'};
+  getSerialData(blinkCountChars);
+
+  // Blink the bus
+  blinkBus(busState, busesToBlink, numBusesToBlink, stringToInt(blinkCountChars));
+
 }
 
 void getSerialData(char* serialData){
@@ -342,9 +372,13 @@ int stringToInt(const char* intString){
 was passing an int** to const int** but was getting
 invalid conversion from 'int**' to 'const int**' [-fpermissive]
 */
-void blinkBus(unsigned long busState, int** busesToBlink, int blinkCount){
+void blinkBus(unsigned long busState, int** busesToBlink, int numBusesToBlink, int blinkCount){
 
-  int numBusesToBlink = lenIntArr(busesToBlink);
+  //int numBusesToBlink = lenIntArr(busesToBlink);
+  Serial.print("Number of buses to blink : ");
+  Serial.print(numBusesToBlink);
+  Serial.print("\n");
+
   unsigned long busStateCopy = busState;
   for(int blinked = 0 ; blinked < blinkCount ; blinked++){
     for(int busIdxBlinked = 0; busIdxBlinked < numBusesToBlink; busIdxBlinked++){
@@ -362,8 +396,8 @@ void blinkBus(unsigned long busState, int** busesToBlink, int blinkCount){
   displayOnBoard(busState);
 }
 
-int lenIntArr(int** intArray){
-  // This assumes that each entry of intArray e.g. intArray[0] , intArray[1] etc
-  // are of the same dimensions, in this case
-  return(sizeof(intArray)/sizeof(intArray[0]));
-}
+// int lenIntArr(int** intArray){
+//   // This assumes that each entry of intArray e.g. intArray[0] , intArray[1] etc
+//   // are of the same dimensions, in this case
+//   return(sizeof(intArray)/sizeof(intArray[0]));
+// }

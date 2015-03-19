@@ -287,51 +287,51 @@ void getBitsCorrespondingToBus(const char* busConstant, int* returnVal){
   // returnVal is initialized with {-1, -1}
   if(isEqual(busConstant,BUS_V_1)){
     returnVal[0] = 0;
-    returnVal[1] = 1;
+    returnVal[1] = 2;
     printDebugMessage("getBitsToSet : Valid Bit", busConstant);
   }else if(isEqual(busConstant,BUS_V_2)){
-    returnVal[0] = 2;
+    returnVal[0] = 1;
     returnVal[1] = 3;
     printDebugMessage("getBitsToSet : Valid Bit", busConstant);
   }else if(isEqual(busConstant,BUS_V_3)){
-    returnVal[0] = 4;
-    returnVal[1] = 5;
-    printDebugMessage("getBitsToSet : Valid Bit", busConstant);
-  }else if(isEqual(busConstant,BUS_V_4)){
-    returnVal[0] = 6;
-    returnVal[1] = 7;
-    printDebugMessage("getBitsToSet : Valid Bit", busConstant);
-  }else if(isEqual(busConstant,BUS_H_1)){
-    returnVal[0] = 8;
-    returnVal[1] = 9;
-    printDebugMessage("getBitsToSet : Valid Bit", busConstant);
-  }else if(isEqual(busConstant,BUS_H_2)){
-    returnVal[0] = 10;
-    returnVal[1] = 11;
-    printDebugMessage("getBitsToSet : Valid Bit", busConstant);
-  }else if(isEqual(busConstant,BUS_H_3)){
-    returnVal[0] = 12;
-    returnVal[1] = 13;
-    printDebugMessage("getBitsToSet : Valid Bit", busConstant);
-  }else if(isEqual(busConstant,BUS_H_4)){
-    returnVal[0] = 14;
-    returnVal[1] = 15;
-    printDebugMessage("getBitsToSet : Valid Bit", busConstant);
-  }else if(isEqual(busConstant,BUS_H_5)){
-    returnVal[0] = 16;
-    returnVal[1] = 17;
-    printDebugMessage("getBitsToSet : Valid Bit", busConstant);
-  }else if(isEqual(busConstant,BUS_H_6)){
-    returnVal[0] = 18;
-    returnVal[1] = 19;
-    printDebugMessage("getBitsToSet : Valid Bit", busConstant);
-  }else if(isEqual(busConstant,BUS_H_7)){
     returnVal[0] = 20;
     returnVal[1] = 21;
     printDebugMessage("getBitsToSet : Valid Bit", busConstant);
-  }else if(isEqual(busConstant,BUS_H_8)){
+  }else if(isEqual(busConstant,BUS_V_4)){
     returnVal[0] = 22;
     returnVal[1] = 23;
+    printDebugMessage("getBitsToSet : Valid Bit", busConstant);
+  }else if(isEqual(busConstant,BUS_H_1)){
+    returnVal[0] = 4;
+    returnVal[1] = 8;
+    printDebugMessage("getBitsToSet : Valid Bit", busConstant);
+  }else if(isEqual(busConstant,BUS_H_2)){
+    returnVal[0] = 5;
+    returnVal[1] = 9;
+    printDebugMessage("getBitsToSet : Valid Bit", busConstant);
+  }else if(isEqual(busConstant,BUS_H_3)){
+    returnVal[0] = 6;
+    returnVal[1] = 10;
+    printDebugMessage("getBitsToSet : Valid Bit", busConstant);
+  }else if(isEqual(busConstant,BUS_H_4)){
+    returnVal[0] = 7;
+    returnVal[1] = 11;
+    printDebugMessage("getBitsToSet : Valid Bit", busConstant);
+  }else if(isEqual(busConstant,BUS_H_5)){
+    returnVal[0] = 12;
+    returnVal[1] = 19;
+    printDebugMessage("getBitsToSet : Valid Bit", busConstant);
+  }else if(isEqual(busConstant,BUS_H_6)){
+    returnVal[0] = 13;
+    returnVal[1] = 18;
+    printDebugMessage("getBitsToSet : Valid Bit", busConstant);
+  }else if(isEqual(busConstant,BUS_H_7)){
+    returnVal[0] = 14;
+    returnVal[1] = 17;
+    printDebugMessage("getBitsToSet : Valid Bit", busConstant);
+  }else if(isEqual(busConstant,BUS_H_8)){
+    returnVal[0] = 15;
+    returnVal[1] = 16;
     printDebugMessage("getBitsToSet : Valid Bit", busConstant);
   }else{
     returnVal[0] = INVALID_BUS_BIT;
